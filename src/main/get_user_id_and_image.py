@@ -31,19 +31,6 @@ def get_user_mentions(tweet_details):
 	except Exception as e:
 		print(e)
 
-# Since there is a limit of 100 IDs, the user ids should be given
-# in steps of 100
-##def get_user_images(id_list):
-	##try:
-		##for ids in range(0, len(id_list), int(len(id_list)/100)):
-			##user_objects = api.lookup_users(id_list)
-			##for user in user_objects:
-				##return (user.id, user.profile_image_url)
-			##if len(ids) == 3000:
-				##print("More results available... Sleeping to avoid hitting the rate limit")
-				##time.sleep(60)
-	##except Exception as e:
-		##print(e)
 
 if __name__ == '__main__':
 	arg = sys.argv[1]
@@ -52,7 +39,7 @@ if __name__ == '__main__':
 
 	dirname = "users/{}".format(arg)
 	imgdir = "users/{}/user_images/".format(arg)
-	id_files = 'users/{}/id.jsonl'.format(arg)
+	id_files = "users/{}/id.jsonl".format(arg)
 	image_url_files = 'users/{}/image_url.jsonl'.format(arg)
 	fname1 = "users/{}/id_and_url_list.jsonl".format(arg)
 	fname2 = "users/{}/top_500_url_and_id.jsonl".format(arg)
@@ -69,7 +56,6 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 
-	# Get each line of the jsonl file as a json file
 	
 	top_user_list = []
 	all_user_url_list = []
@@ -78,70 +64,23 @@ if __name__ == '__main__':
 	with open(arg, 'r') as o:
 		with open(fname1, 'w') as f:
 			users = []
+			# Each line of the JSONL file is  loaded as a JSON file
 			for line in o:
 				try:
 					tweet = json.loads(line)
-					#for line in f:
-					#If the line below doesn't work when importing to MongoDB, 
-					#I think I'll have to remove the 'str' casting function
-					#It might have conveted the file to an unsuitable format
 					temp_user_id = str(tweet['user']['id'])
 					temp_url = str(tweet['user']['profile_image_url']).replace('normal','400x400')
 					users = {"user_id" : temp_user_id, "url": temp_url}
-					#user = '{"id": "tweet['user']['id_str']", "image_url": "tweet['user']['profile_image_url']"}'				
-					##user = str(("id: "+ tweet['user']['id_str'], "image_url: "+ tweet['user']['profile_image_url']))
-					#user = auth.get_user('user_id')
-					#user = auth.lookup_users('user_id')
-					#user_list =	','.join(user)
-					#user= user.replace('normal','400x400')
-					#user_list = json.loads(user)
-					##user_list =	''.join(user)
-					#user_list.append(user)
 					user_json = ""
-					#user_image_url.append(user)
-					#user_json.append([[str(user_list) for users in tweet] for line in o])
 					user_json = json.dumps(users)				
-					#user_json = json.dumps([ for user_list in users] for line in o)
 					f.write(user_json + "\n")
 					print(user_json) #, user_image_url)
-						#time.sleep(5)
-					#f.write(user_list)
 				except Exception as e:
 					print(e)
 			o.close()
 		f.close()
 
-	
-	# Get each line of the jsonl file as a json file
-	##with open(arg, 'r') as o:
-			##with open(fname2, 'w') as f:
-				##for line in o:
-					##try:
-						##tweet = json.loads(line)
-						##user_image_url_list = object()
-						#for line in f:
-						#If the line below doesn't work when importing to MongoDB, 
-						#I think I'll have to remove the 'str' casting function
-						#It might have conveted the file to an unsuitable format
-						##user = str(tweet['user']['profile_image_url'])
-						##user= user.replace('normal','400x400')
-						##user_image_url_list = ''.join(user)
-							#user_list.append(user)
-							#user_image_url.append(user)
-						##print(user_image_url_list) #, user_image_url)
-							#time.sleep(5)
-						##f.write((user_image_url_list) + "\n")
-					##except Exception as e:
-						##print(e)
-			##f.close()
-	##o.close()
-	
-		##for user, count in top_user_count.most_common(10):
-			##top_user_list.append(user)
-			#print("{}: {}".format(user, count))
-		##print(all_user_url_list['user_id'])
-
-
+	'''
 	# Get all tweets as from the JSONL file (the one with all tweets)
 	# For each tweet, check for user mentions
 	# Store the IDs of the top 500 users with the highest mentions
@@ -151,7 +90,7 @@ if __name__ == '__main__':
  	# For every line in the original file, get the id and url and update the counter
 	# Store these values as a JSON object (has been done earlier in the code - fname1)
 	# For every line in the id_and_url_file variable, check if the 'user_id' == mentions_list['id']
-
+	'''
 	with open(arg, 'r') as original_file, open(fname1, 'r') as id_and_url_file, open(fname2, 'w') as top_500_id_and_count_file, open(fname3, 'w') as id_and_count_500_file:
 
 		try:
