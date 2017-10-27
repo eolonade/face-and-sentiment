@@ -144,10 +144,3 @@ if __name__ == '__main__':
 	ss.close()
 	fulljson.close()
 
-
-
-
-
-
-
-
